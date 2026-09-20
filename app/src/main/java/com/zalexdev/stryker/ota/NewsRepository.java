@@ -23,9 +23,9 @@ public final class NewsRepository {
 
     public static List<News> defaults() {
         News oss = new News();
-        oss.title = "StrykerOSS is open source";
-        oss.description = "Released as free and open-source software. Visit the GitHub repository "
-                + "for source, issues and contributions.";
+        oss.title = "ARCXSTRIKE is open source";
+        oss.description = "Released as free and open-source software with a rootless Arch Linux engine. "
+                + "Visit the GitHub repository for source, issues and contributions.";
         oss.newsDate = "2026";
         oss.id = 1;
         oss.pinned = true;

@@ -1,29 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/init_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_contrast"
-    android:gravity="center"
-    android:orientation="vertical">
+    android:background="#050806"
+    android:padding="16dp">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/nothing_img"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_rawRes="@raw/hello" />
+    <!-- 1. Ambient Matrix Digital Rain in Background -->
+    <com.zalexdev.stryker.custom.MatrixRainView
+        android:id="@+id/init_matrix_rain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.22" />
 
-    <TextView
-        android:id="@+id/nothing_text"
-        android:layout_width="wrap_content"
+    <!-- 2. Top Cyber HUD Header -->
+    <LinearLayout
+        android:id="@+id/top_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:text="Initializing..."
-        android:textSize="30dp" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
+        <View
+            android:id="@+id/top_dot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/sev_dot_bg"
+            android:backgroundTint="#00FF66" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/top_system_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.08"
+            android:text="BOOT_LOADER // ARCH_AARCH64_v6"
+            android:textColor="#00FF66"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/hex_ticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="0x7F454C46"
+            android:textColor="#00E5FF"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/badge_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/cyber_badge_bg"
+            android:fontFamily="monospace"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:text="BOOTING"
+            android:textColor="#FFD600"
+            android:textSize="9sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 3. Center Section: Hacker Logo & High-Tech HUD Loader -->
+    <LinearLayout
+        android:id="@+id/center_branding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top_header"
+        android:layout_above="@id/bottom_container"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!-- High-Tech Circular HUD Loader & Audio Visualizer -->
+        <com.zalexdev.stryker.custom.HackerLoadingView
+            android:id="@+id/hacker_loading_hud"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:id="@+id/brand_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.14"
+            android:shadowColor="#CC00FF66"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="14"
+            android:text="ARCXSTRIKE"
+            android:textColor="#00FF66"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/boot_stage_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.06"
+            android:text="[ STAGE 1/5: INITIALIZING HYPERVISOR ]"
+            android:textColor="#00E5FF"
+            android:textSize="10sp" />
+    </LinearLayout>
+
+    <!-- 4. Bottom Cyber Terminal Box & Progress -->
+    <LinearLayout
+        android:id="@+id/bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="12dp"
+        android:orientation="vertical">
+
+        <!-- Cyber Terminal Box -->
+        <LinearLayout
+            android:id="@+id/terminal_card"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:background="@drawable/cyber_terminal_box"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="monospace"
+                    android:letterSpacing="0.05"
+                    android:text="KERNEL_STREAM >> CTOS_OVERRIDE_V6"
+                    android:textColor="#00FF66"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/terminal_lines_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:text="STREAM: LIVE"
+                    android:textColor="#839988"
+                    android:textSize="9sp" />
+            </LinearLayout>
+
+            <!-- Scrollable live typewriter text -->
+            <ScrollView
+                android:id="@+id/terminal_scroll"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="4dp"
+                android:fillViewport="true"
+                android:scrollbars="none">
+
+                <TextView
+                    android:id="@+id/terminal_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="monospace"
+                    android:lineSpacingExtra="2dp"
+                    android:textColor="#00E676"
+                    android:textSize="10sp" />
+            </ScrollView>
+        </LinearLayout>
+
+        <!-- Cyber Linear Progress Indicator -->
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/boot_progress"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="0"
+            app:indicatorColor="#00FF66"
+            app:trackColor="#14281A"
+            app:trackCornerRadius="2dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/boot_status_line"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="monospace"
+                android:text="INITIALIZING ROOTLESS ENVIRONMENT..."
+                android:textColor="#839988"
+                android:textSize="10sp" />
+
+            <TextView
+                android:id="@+id/bypass_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:text="[TAP TO BYPASS]"
+                android:textColor="#00E5FF"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

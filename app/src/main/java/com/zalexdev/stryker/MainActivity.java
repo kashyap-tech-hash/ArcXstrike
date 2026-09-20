@@ -14,7 +14,10 @@ import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.os.StrictMode;
+import android.os.SystemClock;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -49,6 +52,7 @@ import com.zalexdev.stryker.metasploit.utils.MetasploitUtils;
 import com.zalexdev.stryker.nmap.NmapScanner;
 import com.zalexdev.stryker.nuclei.InstallNuclei;
 import com.zalexdev.stryker.ota.UpdateManager;
+import com.zalexdev.stryker.landing.LandingFragment;
 import com.zalexdev.stryker.settings.SettingsNew;
 import com.zalexdev.stryker.utils.Core;
 import com.zalexdev.stryker.utils.PromoDialogs;
@@ -104,11 +108,14 @@ public class MainActivity extends AppCompatActivity {
     private volatile boolean landed;
     private volatile boolean launchRunning;
     private boolean firstResume = true;
+    private long launchStartTime = 0;
+    private Fragment pendingLandingFragment = null;
 
     @SuppressLint({"NonConstantResourceId", "UseCompatLoadingForDrawables", "SetTextI18n", "SdCardPath"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        launchStartTime = SystemClock.elapsedRealtime();
         core = new Core(this);
         com.zalexdev.stryker.logger.LogStore.from(getApplicationContext());
         setContentView(R.layout.activity_main);
@@ -121,7 +128,13 @@ public class MainActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent, new Initializing()).commit();
+        View mainToolbar = findViewById(R.id.main_toolbar);
+        if (mainToolbar != null) mainToolbar.setVisibility(View.GONE);
+
+        DrawerLayout drawer = findViewById(R.id.drawerLayout);
+        if (drawer != null) drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+
+        fragmentManager.beginTransaction().replace(R.id.flContent, new LandingFragment()).commit();
         settings = findViewById(R.id.settings_icon);
         settings.setOnClickListener(view -> {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.flContent);
@@ -138,10 +151,6 @@ public class MainActivity extends AppCompatActivity {
             new Thread(() -> core.deleteFile("/data/data/com.zalexdev.stryker/files/Stryker.apk")).start();
             core.remove("clean_after_update");
         }
-
-        runLaunchFlow();
-
-        DrawerLayout drawer = findViewById(R.id.drawerLayout);
 
         logo = findViewById(R.id.stryker_main_logo);
         menu = findViewById(R.id.menu_img);
@@ -586,13 +595,53 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
-    private void landOn(Fragment fragment) {
-        runOnUiThread(() -> {
-            if (isFinishing() || isDestroyed()) return;
+    public void startHackerBootSequence() {
+        if (landed) return;
+        launchStartTime = SystemClock.elapsedRealtime();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.flContent, new Initializing())
+                .commitAllowingStateLoss();
+        runLaunchFlow();
+    }
+
+    public void bypassBootAnimation() {
+        if (pendingLandingFragment != null && !landed) {
+            Fragment f = pendingLandingFragment;
+            pendingLandingFragment = null;
             landed = true;
             launchRunning = false;
-            fragmentManager.beginTransaction().replace(R.id.flContent, fragment).commitAllowingStateLoss();
-        });
+            View toolbar = findViewById(R.id.main_toolbar);
+            if (toolbar != null) toolbar.setVisibility(View.VISIBLE);
+            DrawerLayout drawer = findViewById(R.id.drawerLayout);
+            if (drawer != null) drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.flContent, f)
+                    .commitAllowingStateLoss();
+        }
+    }
+
+    private void landOn(Fragment fragment) {
+        pendingLandingFragment = fragment;
+        long elapsed = SystemClock.elapsedRealtime() - launchStartTime;
+        long minBootDuration = 5500; // > 5 seconds hacker boot animation display duration
+        long delay = Math.max(0, minBootDuration - elapsed);
+
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            if (isFinishing() || isDestroyed() || landed) return;
+            landed = true;
+            launchRunning = false;
+            pendingLandingFragment = null;
+            View toolbar = findViewById(R.id.main_toolbar);
+            if (toolbar != null) toolbar.setVisibility(View.VISIBLE);
+            DrawerLayout drawer = findViewById(R.id.drawerLayout);
+            if (drawer != null) drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+            fragmentManager.beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .replace(R.id.flContent, fragment)
+                    .commitAllowingStateLoss();
+        }, delay);
     }
 
     @Override
@@ -603,7 +652,9 @@ public class MainActivity extends AppCompatActivity {
             firstResume = false;
             return;
         }
-        runLaunchFlow();
+        if (!landed && launchRunning) {
+            runLaunchFlow();
+        }
     }
 
     @SuppressLint("SdCardPath")
@@ -756,10 +807,9 @@ public class MainActivity extends AppCompatActivity {
             logo.setText(title);
         }
 
-        @SuppressLint("SetTextI18n")
         @Override
         public void restoreTitle() {
-            logo.setText("StrykerOSS");
+            logo.setText(R.string.app_name);
         }
 
         @Override

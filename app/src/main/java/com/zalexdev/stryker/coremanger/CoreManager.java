@@ -406,13 +406,28 @@ public class CoreManager extends Fragment {
         for (String line : out) {
             if (line == null) continue;
             String row = line.trim();
-            if (row.isEmpty()) continue;
-            int sep = row.indexOf(" - ");
-            String name = (sep > 0 ? row.substring(0, sep) : row).trim();
+            if (row.isEmpty() || row.startsWith(" ")) continue;
+            String name = "";
+            String ver = "";
+            if (row.contains(" - ")) {
+                int sep = row.indexOf(" - ");
+                name = row.substring(0, sep).trim();
+            } else if (row.contains("/")) {
+                // pacman format: core/pkgname 1.2.3 [installed]
+                String[] parts = row.split("\\s+");
+                if (parts.length > 0) {
+                    String repoPkg = parts[0];
+                    name = repoPkg.substring(repoPkg.indexOf('/') + 1).trim();
+                    if (parts.length > 1) ver = parts[1].trim();
+                }
+            } else {
+                String[] parts = row.split("\\s+");
+                if (parts.length > 0) name = parts[0].trim();
+            }
             if (name.isEmpty() || name.contains(" ")) continue;
             Package temp = new Package();
             temp.setName(name);
-            temp.setVersion("");
+            temp.setVersion(ver);
             temp.setIsPythonPackage(false);
             for (Package p : installedPackages) {
                 if (p.getName().equals(name)) {
@@ -421,7 +436,7 @@ public class CoreManager extends Fragment {
                     break;
                 }
             }
-            if (name.equals(q)) res.add(0, temp);
+            if (name.equalsIgnoreCase(q)) res.add(0, temp);
             else res.add(temp);
         }
         return res;
@@ -435,6 +450,9 @@ public class CoreManager extends Fragment {
             String row = line.trim();
             if (row.isEmpty()) continue;
             String[] parts = row.split("\t");
+            if (parts.length < 2) {
+                parts = row.split("\\s+", 2);
+            }
             if (parts.length < 2) continue;
             String name = parts[0].trim();
             if (name.isEmpty()) continue;

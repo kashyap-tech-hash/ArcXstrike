@@ -1,13 +1,10 @@
-# Stryker chroot shell environment.
+# ARCXSTRIKE chroot/rootless shell environment.
 #
-# Deployed into the chroot at /etc/stryker_profile.sh and sourced from
+# Deployed into the guest at /etc/stryker_profile.sh and sourced from
 # /etc/profile, so every interactive login shell the terminal opens (it enters
-# via `bash -l`) gets a cool, root-aware, blue two-line prompt instead of the
-# bland default. Also adds a few quality-of-life aliases.
+# via `bash -l`) gets a cool, hacker-themed green two-line prompt.
 #
-# Note: \h is intentionally NOT used — the chroot shares the device UTS
-# namespace, so \h is the Android hostname ("localhost"), which is exactly the
-# dull prompt this replaces. We brand the prompt "⚡Stryker" instead.
+# Note: \h is intentionally NOT used — we brand the prompt "⚡ARCXSTRIKE" instead.
 
 # Only dress up interactive shells.
 case "$-" in
@@ -15,28 +12,28 @@ case "$-" in
     *) return 0 2>/dev/null || exit 0 ;;
 esac
 
-# Blue palette, wrapped in \[ \] so the line editor keeps the cursor maths right.
-__s_rail='\[\033[1;38;5;33m\]'   # bold blue — rails
-__s_path='\[\033[38;5;75m\]'     # light blue — path
+# Cyber green palette, wrapped in \[ \] so the line editor keeps cursor maths right.
+__s_rail='\[\033[1;38;5;46m\]'   # bold neon green — rails
+__s_path='\[\033[38;5;84m\]'     # light cyber green — path
 __s_dim='\[\033[2m\]'
 __s_rst='\[\033[0m\]'
 
-# Root → brighter blue brand; normal user → blue. \$ renders '#' for root, '$' otherwise.
+# Root → brighter green brand; normal user → cyber green.
 if [ "$(id -u 2>/dev/null)" = "0" ]; then
-    __s_brand='\[\033[1;38;5;39m\]'
+    __s_brand='\[\033[1;38;5;46m\]'
 else
-    __s_brand='\[\033[1;38;5;33m\]'
+    __s_brand='\[\033[1;38;5;48m\]'
 fi
 __s_tip="${__s_brand}"'\$'"${__s_rst}"
 
-#   ┌──(⚡Stryker)─[ ~/current/path ]
+#   ┌──(⚡ARCXSTRIKE)─[ ~/current/path ]
 #   └─#
-PS1="${__s_rail}┌──${__s_rst}${__s_dim}(${__s_rst}${__s_brand}⚡Stryker${__s_rst}${__s_dim})${__s_rst}${__s_dim}─[${__s_rst}${__s_path}\\w${__s_rst}${__s_dim}]${__s_rst}\n${__s_rail}└─${__s_rst}${__s_tip} "
+PS1="${__s_rail}┌──${__s_rst}${__s_dim}(${__s_rst}${__s_brand}⚡ARCXSTRIKE${__s_rst}${__s_dim})${__s_rst}${__s_dim}─[${__s_rst}${__s_path}\\w${__s_rst}${__s_dim}]${__s_rst}\n${__s_rail}└─${__s_rst}${__s_tip} "
 PS2="${__s_rail}└─${__s_rst}${__s_dim}>${__s_rst} "
 export PS1 PS2
 [ -z "$TERM" ] && export TERM=xterm-256color
 
-# Quality-of-life aliases.
+# Quality-of-life & Arch aliases.
 alias ls='ls --color=auto 2>/dev/null || ls'
 alias ll='ls -lh'
 alias la='ls -lha'
@@ -46,11 +43,13 @@ alias ...='cd ../..'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias ports='netstat -tulpn 2>/dev/null || ss -tulpn'
+alias pac='pacman'
+alias update='pacman -Sy'
 
 # One tasteful banner per interactive login shell.
-if [ -z "$__STRYKER_GREETED" ]; then
-    __STRYKER_GREETED=1
-    printf '\033[1;38;5;39m⚡ STRYKER\033[0m \033[2m- pentest shell\033[0m\n'
+if [ -z "$__ARCXSTRIKE_GREETED" ]; then
+    __ARCXSTRIKE_GREETED=1
+    printf '\033[1;38;5;46m⚡ ARCXSTRIKE\033[0m \033[2m- rootless arch security shell [educational]\033[0m\n'
 fi
 
 unset __s_rail __s_path __s_dim __s_rst __s_brand __s_tip

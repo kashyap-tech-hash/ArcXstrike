@@ -1,185 +1,118 @@
-# StrykerOSS
+<div align="center">
 
-> A free and open-source mobile pentest suite for Android. Authorized testing only.
+![ARCXSTRIKE Banner](assets/banner.png)
 
-StrykerOSS bundles a curated set of network, wireless and web security tools into a single rooted-Android application, exposing them through a unified, modern UI. It runs a Debian trixie (arm64) `chroot` under `/data/local/stryker/release` so heavyweight tools (Nmap, Metasploit, Nuclei, Hydra, SearchSploit, etc.) execute natively on the device — the same rootfs the rootless QEMU VM boots when root is unavailable. A built-in terminal (drawer → **Terminal**, or the **Stryker Terminal** launcher icon) drops straight into that chroot — no external shell app required.
+# ⚡ ARCXSTRIKE
 
-- **Package**: `com.zalexdev.stryker`
-- **Version**: 6.0
-- **Min SDK**: 24 (Android 7.0) · **Target SDK**: 28
-- **License**: [GNU GPL v3.0](LICENSE) (bundled third-party components keep their own licenses — see in-app *About → Open-source licenses*)
-- **Project site**: [zalexdev.com](https://zalexdev.com)
-- **Source**: [github.com/zalexdev/strykerapp](https://github.com/zalexdev/strykerapp)
+### Next-Generation Rootless Arch Linux Mobile Security & Research Suite for Android
+*Rootless Arch Linux ARM64 Engine · Cyberpunk Hacker Terminal · Network & Wireless Auditing*
 
----
-
-## Capabilities
-
-| Module | Description |
-|---|---|
-| **Dashboard** | Live overview of the chroot, USB adapters, mounted state and quick actions. |
-| **WiFi networks** | Scan, deauth, handshake capture, WPS attacks (Pixie Dust, common pins, custom pins) via external monitor-mode adapters. |
-| **Handshakes** | Local handshake storage with rename, share, export to OnlineHashCrack and on-device cracking via Hashcat. |
-| **MAC changer** | Inline + dedicated MAC randomizer with persistent profiles. |
-| **WhisperPair (BLE)** | Fast Pair device discovery, CVE-2025-36911 vulnerability check and full exploit chain (RAW/RETROACTIVE/EXTENDED_RESPONSE), post-pair account-key write and HFP audio capture/passthrough. |
-| **Local network** | Nmap host discovery, port scans, OS fingerprinting, per-device exploit dispatch with a live terminal. |
-| **Nmap** | Direct Nmap interface with custom scripts, NSE, and exported reports. |
-| **Web scanner (Nuclei)** | Multi-target Nuclei scans with severity-grouped findings and per-finding evidence. |
-| **Arsenal** | Custom exploit / scanner database with template arguments (`{IP}`, `{PORT}`, `{MAC}`, `{GW}`, `{MASK}`). |
-| **HID Attacks** | DuckyScript-compatible USB HID injection — pure-Java parser (Hak5 v1 + v3 superset), 7 bundled keyboard layouts (US/GB/DE/FR/ES/IT/RU), live execution log and bundled sample payloads. |
-| **USB Arsenal** | USB-gadget profile manager — toggle HID keyboard/mouse, mass-storage, RNDIS/ECM/ACM functions on the fly, customise VID/PID/serial, mount `.img`/`.iso` images as removable disks. |
-| **Metasploit** | Native MSF console inside the chroot with sessions, payload generation and module browser. |
-| **GeoMac** | OSM-based map of captured BSSIDs / handshakes with WiGLE-style export (KML/CSV). |
-| **VNC desktop** | Stand-up an in-chroot XFCE/Xfce-VNC session and view it locally. |
-| **Core manager** | Mount / unmount / repair the chroot, manage installed components. |
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-00FF66.svg?style=flat-square)](LICENSE)
+[![Platform: Android](https://img.shields.io/badge/Platform-Android%207.0%2B-00FF66.svg?style=flat-square)](https://developer.android.com)
+[![Engine: Arch Linux ARM64](https://img.shields.io/badge/Engine-Arch%20Linux%20ARM64-1793D1.svg?style=flat-square)](https://archlinuxarm.org)
+[![Based on: Stryker](https://img.shields.io/badge/Based%20on-Stryker%20App-brightgreen.svg?style=flat-square)](https://github.com/zalexdev/strykerapp)
 
 ---
 
-## Requirements
+</div>
 
-- **Rooted Android device** (Magisk or KernelSU recommended).
-- **~1 GB free internal storage** for the chroot, bundled tools and signatures.
-- **External monitor-mode USB Wi-Fi adapter** for handshake capture and deauthentication (Atheros AR9271 / Realtek 88XXAU recommended).
-- **Gadget-capable kernel (optional)** for HID Attacks and USB Arsenal. Required kernel options:
-  - `CONFIG_USB_CONFIGFS=y`
-  - `CONFIG_USB_CONFIGFS_F_HID=y`
-  - `CONFIG_USB_CONFIGFS_MASS_STORAGE=y` (for mass-storage profiles)
-  - `CONFIG_USB_CONFIGFS_RNDIS=y` / `CONFIG_USB_CONFIGFS_ECM=y` (for network profiles)
-  - kernel ≥ 3.19, `/sys/class/udc/` populated
-  - NetHunter / KernelSU-Next kernels and most modern OEM kernels meet these requirements out of the box.
+## 📌 About ARCXSTRIKE
+
+**ARCXSTRIKE** is an advanced mobile security auditing and penetration testing suite designed for Android. 
+
+> [!NOTE]
+> **Lineage & Heritage:**  
+> **ARCXSTRIKE is based on and evolved from [Stryker App](https://github.com/zalexdev/strykerapp)** (developed by [zalexdev](https://github.com/zalexdev)). ARCXSTRIKE extends the original concept by integrating a **Rootless Arch Linux ARM64 engine** powered by QEMU, native `pacman` package management, modernized cyberpunk terminal interfaces, real-time telemetry rings, and an expanded security auditing toolkit.
+
+ARCXSTRIKE allows security researchers, penetration testers, and students to run industry-standard auditing tools (such as Nmap, Metasploit, Nuclei, Hydra, and SearchSploit) directly on an Android device without requiring root permissions or endangering host system integrity.
 
 ---
 
-## Build
+## ⚠️ Educational & Ethical Disclaimer
 
-Standard Android Gradle build. Java 8 sources, ndk-build for native code, R8 minification for release.
+> [!IMPORTANT]
+> **ARCXSTRIKE is designed strictly for educational purposes, authorized security auditing, and academic research.**  
+> Under no circumstances should this application or its bundled utilities be used against unauthorized networks, computers, or devices. You are solely responsible for complying with all international, national, and local cybersecurity laws and regulations. Always obtain prior written authorization before performing security assessments.
+
+---
+
+## 🚀 Core Features
+
+| Feature | Description |
+| :--- | :--- |
+| 🛡️ **Rootless Arch Linux Engine** | Embedded Arch Linux ARM64 guest system powered by QEMU with native `pacman` package management, VirtFS shared storage (`/sdcard/ARCXSTRIKE`), and dynamic core management. |
+| 💻 **Hacker Terminal** | High-performance terminal emulator with custom `⚡ARCXSTRIKE` neon green shell prompt, Arch Linux aliases, and seamless guest execution. |
+| 📊 **Dashboard & VM Telemetry** | Real-time VM status ring, CPU/RAM telemetry sparklines, guest battery and storage metrics, and quick action launchpads. |
+| 📡 **WiFi Security Toolkit** | Monitor nearby access points, map 2.4/5GHz channel congestion, capture 4-way WPA handshakes, and test WPS implementations (Pixie Dust, known pins) via compatible OTG Wi-Fi adapters. |
+| 🤝 **Handshake Hub** | Local handshake manager (`/sdcard/ARCXSTRIKE/captured`), offline wordlist cracking via Hashcat/Aircrack, and cloud hash export. |
+| 🌐 **Local Network & Nmap** | Fast subnet discovery, OS fingerprinting, port scanning, NSE script execution, and exportable XML/JSON reports. |
+| 🔍 **Web Scanner (Nuclei)** | Automated ProjectDiscovery Nuclei vulnerability scanner with community template feeds and vulnerability classification. |
+| 💣 **Arsenal & ExploitDB** | Parameterized script launcher (`{IP}`, `{PORT}`, `{MAC}`) and offline SearchSploit mirror for rapid proof-of-concept verification. |
+| 🎯 **Metasploit Framework** | Integrated MSF RPC console, module search, staged and stageless payload generation with `msfvenom` and `msfpc`. |
+| 🔌 **USB Arsenal & HID** | USB ConfigFS gadget orchestrator (HID keyboard, mass storage, RNDIS network) with DuckyScript execution engine (on supported kernels). |
+| 🗺️ **GeoMac Mapping** | Offline and USGS satellite mapping of captured BSSIDs with export to KML (Google Earth) and JSON. |
+| 🖥️ **VNC Desktop (XFCE)** | In-guest graphical desktop environment with XFCE4, x11vnc, and headless Xvfb rendering. |
+
+---
+
+## 🏗️ Architecture: Rootless Arch Linux Guest
+
+ARCXSTRIKE implements an isolated, self-contained rootless virtualization engine:
+
+```mermaid
+graph TD
+    A[Android Host System] -->|User Space| B[ARCXSTRIKE App UI & Terminal]
+    B -->|Control Socket / Agent| C[Rootless QEMU ARM64 Layer]
+    C -->|SLIRP User Network| D[Arch Linux ARM64 Guest OS]
+    D -->|pacman| E[Security Toolchain: Nmap, Metasploit, Nuclei]
+    C -->|VirtFS 9p Mount| F[/sdcard/ARCXSTRIKE Shared Storage]
+```
+
+1. **Rootless QEMU ARM64 (`qemu-system-aarch64`)**: Spawns an isolated Linux virtual machine using user-mode SLIRP networking and VirtIO storage.
+2. **Arch Linux ARM64 Rootfs**: Operates a lightweight Arch Linux guest environment with `pacman` as the primary package manager.
+3. **VirtFS Shared Storage**: Bidirectional 9p file-sharing between Android host storage (`/sdcard/ARCXSTRIKE`) and guest mount points.
+4. **Console Agent**: Internal Unix domain socket / socat agent bridging Android Java processes with guest shell executions without requiring `root` or `adb`.
+
+---
+
+## 🛠️ Building from Source
+
+### Prerequisites
+* Android Studio Iguana / Jellyfish or newer
+* Android SDK (API 24 to 28+) & NDK (r25c or newer)
+* Java Development Kit (JDK 17)
+
+### Build Commands
 
 ```bash
-# Debug APK
+# Clone the repository
+git clone https://github.com/Arunachalam-gojosaturo/ArcXstrike.git
+cd ArcXstrike
+
+# Build Debug APK
 ./gradlew assembleDebug
 
-# Release APK (minified + R8)
+# Build Release APK
 ./gradlew assembleRelease
 
-# Install on a connected device
+# Install on a connected test device
 ./gradlew installDebug
-
-# Lint
-./gradlew lint
 ```
 
-Output APKs land in `app/build/outputs/apk/`.
-
-### Release signing
-
-Configure these in `~/.gradle/gradle.properties` (or pass via `-P` / environment):
-
-```properties
-STRYKER_RELEASE_STORE_FILE=/path/to/keystore.jks
-STRYKER_RELEASE_STORE_PASSWORD=...
-STRYKER_RELEASE_KEY_ALIAS=...
-STRYKER_RELEASE_KEY_PASSWORD=...
-```
-
-If the variables are not set, the release build is left unsigned so CI / contributors can still produce an APK.
+Compiled APK files will be located in `app/build/outputs/apk/`.
 
 ---
 
-## Installation (end users)
+## 🤝 Credits & Acknowledgements
 
-1. Install the APK on a **rooted** device (`adb install StrykerOSS-6.0.apk` or sideload).
-2. On first launch the in-app installer (`AppIntroActivity`) will:
-   - Request root (`su`).
-   - Request runtime permissions (storage, location, notifications, Bluetooth, audio).
-   - Download and unpack the Debian trixie arm64 `chroot` core (`chroot64-debian.tar.gz`).
-   - Mount the chroot at `/data/local/stryker/release`.
-   - Install optional components (Metasploit, Nuclei, Hydra, SearchSploit).
-3. Open the built-in terminal (drawer → **Terminal**) for a shell straight into the chroot.
-4. Plug in a supported USB Wi-Fi adapter for monitor-mode features.
+* **[Stryker App](https://github.com/zalexdev/strykerapp)** by **[zalexdev](https://github.com/zalexdev)** — The foundation upon which ARCXSTRIKE is built.
+* **Arch Linux ARM** — [archlinuxarm.org](https://archlinuxarm.org)
+* **QEMU** — [qemu.org](https://www.qemu.org)
+* **Terminal Emulator** & open-source Linux utilities (BusyBox, Nmap, Metasploit, Nuclei).
 
 ---
 
-## Project layout
+## 📜 License
 
-```
-app/
-├── src/main/java/com/zalexdev/stryker/
-│   ├── MainActivity.java            # Single-Activity host, drawer navigation
-│   ├── about/                       # About / info page
-│   ├── appintro/                    # First-launch installer & slides
-│   ├── arsenal/                     # Custom exploit/scanner database
-│   ├── coremanger/                  # Chroot manage / repair UI
-│   ├── custom/                      # POJO domain models
-│   ├── dashboard/                   # Home dashboard
-│   ├── geomac/                      # OSM map for captured BSSIDs
-│   ├── handshakes/                  # Handshake browser + cracking
-│   ├── hid/                         # HID Attacks: DuckyScript engine, keymaps, executor, UI
-│   ├── hydra/                       # Hydra integration
-│   ├── localnetwork/                # LAN scan + exploit dispatch
-│   ├── macchanger/                  # MAC randomizer
-│   ├── metasploit/                  # MSF integration
-│   ├── nmap/                        # Nmap UI
-│   ├── nuclei/                      # Web vuln scanner
-│   ├── searchsploit/                # ExploitDB browser
-│   ├── settings/                    # User settings
-│   ├── usbarsenal/                  # USB Arsenal: gadget profiles, configfs orchestration
-│   ├── utils/                       # Core helpers, process wrappers
-│   ├── vnc/                         # In-chroot VNC desktop
-│   ├── wifi/                        # WiFi scan / attack
-│   └── wpair/                       # WhisperPair (BLE Fast Pair) module
-├── src/main/jni/                    # Native code (ndk-build)
-├── src/main/assets/                 # Chroot scripts, wordlists, busybox
-└── src/main/res/                    # Layouts, drawables, strings, themes
-```
-
----
-
-## Contributing
-
-PRs and issues are welcome at [github.com/zalexdev/strykerapp](https://github.com/zalexdev/strykerapp).
-
-When adding a feature:
-
-- Keep modules self-contained under `com.zalexdev.stryker.<module>`.
-- Reuse `Core.java` helpers for SharedPreferences, SQLite, asset extraction and root process execution rather than re-rolling them.
-- Funnel root commands through `Core.generateSuProcess()` (direct `su` or chroot dispatch).
-- Match the existing Material 3 design language — `MaterialCardView`, `MaterialButton`, dashboard accent colors, monospace terminals.
-- Keep `targetSdk = 28` unless you are ready to migrate all storage / permission code paths.
-
----
-
-## License
-
-StrykerOSS is free software: you can redistribute it and/or modify it under the
-terms of the **GNU General Public License v3.0** as published by the Free Software
-Foundation, either version 3 of the License, or (at your option) any later version.
-The full text is in [`LICENSE`](LICENSE).
-
-```
-StrykerOSS — a mobile pentest suite for Android.
-Copyright (C) 2021-2026 zalexdev
-
-This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <https://www.gnu.org/licenses/>.
-```
-
-Bundled third-party components (terminal emulator, SDL/Xorg, custom-tabs, wordlists,
-PoCs, etc.) are distributed under their own GPLv3-compatible licenses — see
-[`THIRD-PARTY-NOTICES.md`](THIRD-PARTY-NOTICES.md) and the in-app
-*About → Open-source licenses* screen for attributions.
-
----
-
-## Disclaimer
-
-StrykerOSS is provided **for authorized security testing, education and research only**. You are responsible for complying with all applicable laws and obtaining explicit permission before testing any system or device you do not own. The authors accept no liability for misuse.
+ARCXSTRIKE is licensed under the **GNU General Public License v3.0** ([GPL-3.0](LICENSE)).
+Bundled third-party components (Terminal emulator, QEMU, BusyBox, Arch Linux packages) preserve their respective open-source licenses.

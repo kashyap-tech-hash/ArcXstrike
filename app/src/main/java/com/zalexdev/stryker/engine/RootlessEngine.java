@@ -487,11 +487,12 @@ public final class RootlessEngine {
                 if (l != null && l.contains("__FW_OK__")) return;
             }
             GuestExec.logToStore("guest is missing " + ATH9K_HTC_FW
-                    + " — installing firmware-ath9k-htc (ath9k_htc dongles fail with "
+                    + " — installing firmware-ath9k-htc / linux-firmware (ath9k_htc dongles fail with "
                     + "\"Target is unresponsive\" without it)");
-            GuestExec.run("export DEBIAN_FRONTEND=noninteractive; "
-                    + "apt-get install -y --no-install-recommends firmware-ath9k-htc wireless-regdb "
-                    + ">/dev/null 2>&1; true");
+            GuestExec.run("if command -v pacman >/dev/null 2>&1; then "
+                    + "pacman -S --noconfirm --needed linux-firmware wireless-regdb >/dev/null 2>&1; "
+                    + "else export DEBIAN_FRONTEND=noninteractive; "
+                    + "apt-get install -y --no-install-recommends firmware-ath9k-htc wireless-regdb >/dev/null 2>&1; fi; true");
             ArrayList<String> after = GuestExec.run(
                     "[ -f " + ATH9K_HTC_FW + " ] && echo __FW_OK__ || echo __FW_MISSING__");
             for (String l : after) {
@@ -500,7 +501,7 @@ public final class RootlessEngine {
                     return;
                 }
             }
-            GuestExec.logToStore("could not install firmware-ath9k-htc (no network in the VM?)");
+            GuestExec.logToStore("could not install firmware (no network in the VM?)");
         } catch (Throwable ignored) {
         }
     }
@@ -509,7 +510,8 @@ public final class RootlessEngine {
         ensureWifiFirmware();
         try {
             GuestExec.run("mkdir -p /etc/modules-load.d; "
-                    + "{ echo loop; echo squashfs; echo overlay; } > /etc/modules-load.d/stryker.conf 2>/dev/null; true");
+                    + "{ echo loop; echo squashfs; echo overlay; } > /etc/modules-load.d/arcxstrike.conf 2>/dev/null; "
+                    + "cp -f /etc/modules-load.d/arcxstrike.conf /etc/modules-load.d/stryker.conf 2>/dev/null; true");
             if (guestHasModules()) {
                 GuestExec.run("modprobe loop >/dev/null 2>&1; modprobe squashfs >/dev/null 2>&1; "
                         + "modprobe overlay >/dev/null 2>&1; true");
@@ -528,9 +530,12 @@ public final class RootlessEngine {
                 out.flush();
             }
             GuestExec.run("command -v cpio >/dev/null 2>&1 || "
-                    + "(export DEBIAN_FRONTEND=noninteractive; apt-get install -y --no-install-recommends cpio >/dev/null 2>&1); "
+                    + "(command -v pacman >/dev/null 2>&1 && pacman -S --noconfirm --needed cpio >/dev/null 2>&1 "
+                    + "|| (export DEBIAN_FRONTEND=noninteractive; apt-get install -y --no-install-recommends cpio >/dev/null 2>&1)); "
                     + "rm -rf /tmp/stryker-ird; mkdir -p /tmp/stryker-ird; cd /tmp/stryker-ird; "
-                    + "(cpio -idm < /sdcard/Stryker/.initrd.img || busybox cpio -idm < /sdcard/Stryker/.initrd.img) >/dev/null 2>&1; "
+                    + "(cpio -idm < /sdcard/Stryker/.initrd.img 2>/dev/null "
+                    + "|| cpio -idm < /sdcard/ARCXSTRIKE/.initrd.img 2>/dev/null "
+                    + "|| busybox cpio -idm < /sdcard/Stryker/.initrd.img 2>/dev/null) >/dev/null 2>&1; "
                     + "if [ -d /tmp/stryker-ird/lib/modules ]; then mkdir -p /lib/modules; "
                     + "cp -a /tmp/stryker-ird/lib/modules/. /lib/modules/; depmod -a >/dev/null 2>&1; "
                     + "echo __MODULES_DEPLOYED__; fi; rm -rf /tmp/stryker-ird");
@@ -702,12 +707,14 @@ public final class RootlessEngine {
         if (staged != null) {
             // Re-extract unconditionally: the file on disk may exist, be executable, and still be
             // empty, which is the state that produces 203/EXEC.
-            cmd.append(unpackAndVerify("/sdcard/Stryker/" + STAGED_CORE)).append("; ");
+            cmd.append(unpackAndVerify("/sdcard/Stryker/" + STAGED_CORE))
+               .append(" || ").append(unpackAndVerify("/sdcard/ARCXSTRIKE/" + STAGED_CORE)).append("; ");
         }
-        cmd.append("command -v socat >/dev/null 2>&1 || (export DEBIAN_FRONTEND=noninteractive; ")
-           .append("apt-get install -y --no-install-recommends socat >/dev/null 2>&1); ")
-           .append("(systemctl restart stryker-agent.service >/dev/null 2>&1 ")
-           .append("|| (pkill -f stryker-agentd >/dev/null 2>&1; ")
+        cmd.append("command -v socat >/dev/null 2>&1 || (command -v pacman >/dev/null 2>&1 && pacman -S --noconfirm --needed socat >/dev/null 2>&1 ")
+           .append("|| (export DEBIAN_FRONTEND=noninteractive; apt-get install -y --no-install-recommends socat >/dev/null 2>&1)); ")
+           .append("(systemctl restart arcx-agent.service >/dev/null 2>&1 ")
+           .append("|| systemctl restart stryker-agent.service >/dev/null 2>&1 ")
+           .append("|| (pkill -f stryker-agentd >/dev/null 2>&1; pkill -f arcx-agentd >/dev/null 2>&1; ")
            .append("setsid /usr/local/sbin/stryker-agentd >/dev/null 2>&1 &)); ")
            .append("sleep 3; ss -ltn 2>/dev/null | grep -q ':1050' && echo __AGENT_UP__ || echo __AGENT_DOWN__");
 
@@ -1037,15 +1044,23 @@ public final class RootlessEngine {
 
     private File pickShareDir() {
         if (hasStorageAccess()) {
-            File pub = new File(android.os.Environment.getExternalStorageDirectory(), "Stryker");
+            File pub = new File(android.os.Environment.getExternalStorageDirectory(), "ARCXSTRIKE");
+            if (!pub.exists()) {
+                File oldPub = new File(android.os.Environment.getExternalStorageDirectory(), "Stryker");
+                if (oldPub.isDirectory() && oldPub.canWrite()) {
+                    pub = oldPub;
+                }
+            }
             if ((pub.isDirectory() || pub.mkdirs()) && pub.canWrite()) {
                 return withSubdirs(pub);
             }
         }
         File ext = app.getExternalFilesDir(null);
         if (ext != null) {
-            File s = new File(ext, "Stryker");
+            File s = new File(ext, "ARCXSTRIKE");
             if (s.isDirectory() || s.mkdirs()) return withSubdirs(s);
+            File oldS = new File(ext, "Stryker");
+            if (oldS.isDirectory() || oldS.mkdirs()) return withSubdirs(oldS);
         }
         return null;
     }

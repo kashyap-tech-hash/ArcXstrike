@@ -13,10 +13,20 @@
       "sha256": "faa4b256819818360945d8fecc8f05f0f158a76e6a61feb8eff66308c32b3341",
       "size": 140633600
     },
+    "arch": {
+      "min_version_code": 600,
+      "version": "chroot-archlinux-aarch64",
+      "note": "Arch Linux ARM aarch64, same rootfs the rootless VM boots. arm64-v8a only.",
+      "chroot64": {
+        "url": "http://os.archlinuxarm.org/os/ArchLinuxARM-aarch64-latest.tar.gz",
+        "sha256": "",
+        "size": 472502035
+      }
+    },
     "debian": {
       "min_version_code": 600,
       "version": "chroot-debian-trixie",
-      "note": "Debian trixie arm64, same rootfs the rootless VM boots. arm64-v8a only.",
+      "note": "Debian trixie arm64, legacy fallback. arm64-v8a only.",
       "chroot64": {
         "url": "https://github.com/zalexdev/strykerapp/releases/download/chroot-main/chroot64-debian.tar.gz",
         "sha256": "bb27ba9f063dc8000eef947db36df1c0b96f1ec56edb36519a24b7f0ec9b030c",
@@ -90,8 +100,8 @@
     },
     {
       "id": 1,
-      "title": "StrykerOSS is open source",
-      "description": "Released as free and open-source software. Visit the GitHub repository for source, issues and contributions.",
+      "title": "ARCXSTRIKE is open source",
+      "description": "Released as free and open-source software with a rootless Arch Linux engine. Visit the GitHub repository for source, issues and contributions.",
       "newsDate": "2026-06-14",
       "newsUrl": "https://github.com/zalexdev/strykerapp",
       "imageUrl": "",

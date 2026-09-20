@@ -1,55 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="dialog_background_color">#FFFFFFFF</color>
-    <color name="stryker_accent_contrast">#304FFE</color>
-    <color name="stryker_accent">#1565C0</color>
-    <color name="stryker_logo_accent">#1565C0</color>
-    <color name="yellow">#F9A825</color>
-    <color name="red">#C62828</color>
-    <color name="green">#2E7D32</color>
-    <color name="light_contrast">#FFFFFF</color>
-    <color name="night_contrast">#404040</color>
-    <color name="night_contrast_2">#1C1C1C</color>
-    <color name="light_lite_contrast">#EDECEC</color>
-    <color name="grey">#757575</color>
-    <color name="local_circle">#ffffff</color>
-    <color name="device_img">#757575</color>
-    <color name="console">#000000</color>
-    <color name="itemcolor">#DBF3FD</color>
-    <color name="toolbar_color">#ededed</color>
-    <color name="toolbar_darkness_color">#fff</color>
+    <!-- ARCXSTRIKE Hacker Green & Black Palette -->
+    <color name="dialog_background_color">#0F1611</color>
+    <color name="stryker_accent_contrast">#00C853</color>
+    <color name="stryker_accent">#00E676</color>
+    <color name="stryker_logo_accent">#00FF66</color>
+    <color name="brand_green">#00FF66</color>
+    <color name="yellow">#FFD600</color>
+    <color name="red">#FF1744</color>
+    <color name="green">#00E676</color>
+    <color name="light_contrast">#0B100C</color>
+    <color name="night_contrast">#00FF66</color>
+    <color name="night_contrast_2">#E0FFE8</color>
+    <color name="light_lite_contrast">#18221A</color>
+    <color name="grey">#839988</color>
+    <color name="local_circle">#131C15</color>
+    <color name="device_img">#00FF66</color>
+    <color name="console">#00FF66</color>
+    <color name="itemcolor">#131E15</color>
+    <color name="toolbar_color">#0A0E0B</color>
+    <color name="toolbar_darkness_color">#050806</color>
 
-    <!-- Per-tool accent tokens (previously scattered hardcoded hex across ~40 layouts). -->
-    <color name="accent_wifi">#1565C0</color>
-    <color name="accent_local">#AB47BC</color>
-    <color name="accent_handshakes">#00897B</color>
-    <color name="accent_exploits">#EF6C00</color>
-    <color name="accent_searchsploit">#D81B60</color>
-    <color name="accent_nuclei">#3949AB</color>
-    <color name="accent_router">#2E7D32</color>
-    <color name="accent_geomac">#00838F</color>
-    <color name="accent_metasploit">#C62828</color>
-    <color name="accent_utilities">#5E35B1</color>
+    <!-- Per-tool accent tokens (Cyberpunk / Terminal aesthetic) -->
+    <color name="accent_wifi">#00E676</color>
+    <color name="accent_local">#00E5FF</color>
+    <color name="accent_handshakes">#76FF03</color>
+    <color name="accent_exploits">#FF9100</color>
+    <color name="accent_searchsploit">#00E5FF</color>
+    <color name="accent_nuclei">#69F0AE</color>
+    <color name="accent_router">#00E676</color>
+    <color name="accent_geomac">#1DE9B6</color>
+    <color name="accent_metasploit">#FF1744</color>
+    <color name="accent_utilities">#B9F6CA</color>
 
-    <!-- Engine identity — drives the unified status card badge + drawer status dot. -->
-    <color name="accent_chroot">#2E7D32</color>
-    <color name="accent_vm">#1E88E5</color>
-    <color name="status_booting">#F9A825</color>
-    <color name="status_offline">#9E9E9E</color>
+    <!-- Engine identity: Arch Linux & Rootless VM -->
+    <color name="accent_chroot">#00E676</color>
+    <color name="accent_vm">#00E5FF</color>
+    <color name="status_booting">#FFD600</color>
+    <color name="status_offline">#4A5E4E</color>
 
-    <!-- Disabled ROOT-section rows. -->
-    <color name="row_locked">#61757575</color>
+    <!-- Disabled ROOT-section rows -->
+    <color name="row_locked">#614A5E4E</color>
 
-    <!-- Icon tile discs. Kept readable against the card in BOTH themes: pastel on light,
-         low-alpha hue on dark (the pastels used to render as near-white blobs at night). -->
-    <color name="icon_tile_neutral">#E9EBEE</color>
-    <color name="tile_blue">#E3F2FD</color>
-    <color name="tile_cyan">#E0F7FA</color>
-    <color name="tile_green">#E8F5E9</color>
-    <color name="tile_indigo">#E8EAF6</color>
-    <color name="tile_orange">#FFF3E0</color>
-    <color name="tile_pink">#FCE4EC</color>
-    <color name="tile_purple">#F3E5F5</color>
-    <color name="tile_red">#FFEBEE</color>
-    <color name="tile_teal">#E0F2F1</color>
+    <!-- Icon tile discs -->
+    <color name="icon_tile_neutral">#141F16</color>
+    <color name="tile_blue">#2600E5FF</color>
+    <color name="tile_cyan">#261DE9B6</color>
+    <color name="tile_green">#2600E676</color>
+    <color name="tile_indigo">#2600B0FF</color>
+    <color name="tile_orange">#26FF9100</color>
+    <color name="tile_pink">#26FF4081</color>
+    <color name="tile_purple">#26B388FF</color>
+    <color name="tile_red">#26FF1744</color>
+    <color name="tile_teal">#2669F0AE</color>
+
+    <color name="appicon_background">#050806</color>
 </resources>

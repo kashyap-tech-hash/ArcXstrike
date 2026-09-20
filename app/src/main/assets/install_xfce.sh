@@ -1,14 +1,14 @@
 #!/bin/bash
 
 function error {
-    echo "Stryker VNC setup helper <<"
+    echo "ARCXSTRIKE VNC setup helper <<"
     echo ""
     echo "Failed to update packages, check access to repository or your internet connection."
     exit 1
 }
 
 function scripts_writing_error() {
-    echo "Stryker VNC setup helper <<"
+    echo "ARCXSTRIKE VNC setup helper <<"
     echo ""
     echo "Failed to write scripts. Critical error!"
     exit 1
@@ -17,22 +17,25 @@ function scripts_writing_error() {
 export DEBIAN_FRONTEND=noninteractive
 
 echo "×Refreshing package index"
-apt-get update || error
-# xfce4-session + panel + desktop + wm + xfconf are the actual moving parts
-# behind `startxfce4`; we pull them explicitly so --no-install-recommends can
-# never leave the metapackage half-assembled. libgl1-mesa-dri gives a software
-# GL driver so xfwm4's compositor can render inside a chroot without GPU access
-# (otherwise xfwm dies and you get a bare X with default cursor). fonts-dejavu
-# prevents the "no fonts" blank; procps supplies the pkill/pgrep the generated
-# helper scripts rely on.
-echo "×Installing XFCE and x11vnc"
-apt-get install -y --no-install-recommends ca-certificates curl openssl xvfb \
-    x11vnc xfce4 xfce4-session xfce4-panel xfdesktop4 xfwm4 xfconf \
-    xfce4-terminal elementary-xfce-icon-theme dbus dbus-x11 fonts-dejavu \
-    libgl1-mesa-dri libgl1 x11-xserver-utils x11-xkb-utils xinit procps || error
+if command -v pacman >/dev/null 2>&1; then
+    pacman -Sy --noconfirm || error
+    echo "×Installing XFCE and x11vnc via pacman"
+    pacman -S --noconfirm --needed ca-certificates curl openssl xorg-server-xvfb \
+        x11vnc xfce4 xfce4-terminal dbus ttf-dejavu mesa xorg-xset xorg-xinit procps-ng || error
+elif command -v apt-get >/dev/null 2>&1; then
+    apt-get update || error
+    echo "×Installing XFCE and x11vnc via apt"
+    apt-get install -y --no-install-recommends ca-certificates curl openssl xvfb \
+        x11vnc xfce4 xfce4-session xfce4-panel xfdesktop4 xfwm4 xfconf \
+        xfce4-terminal elementary-xfce-icon-theme dbus dbus-x11 fonts-dejavu \
+        libgl1-mesa-dri libgl1 x11-xserver-utils x11-xkb-utils xinit procps || error
+else
+    echo "No supported package manager found (pacman or apt-get required)."
+    exit 1
+fi
 
 echo "×Preparing the VNC password"
-PASS=stryker
+PASS=arcxstrike
 
 [ ! -f /root/.vnc/passwd ] && echo "No previous VNC password found. Setting $PASS as default password!" && mkdir -p /root/.vnc && x11vnc -storepasswd $PASS /root/.vnc/passwd || echo "Previously generated password found. Keeping your old password!"
 
@@ -175,7 +178,7 @@ if [ -z \$PASSWORD ]; then
 fi
 mkdir -p /root/.vnc && x11vnc -storepasswd \"\$PASSWORD\" /root/.vnc/passwd" > /usr/local/bin/vncpasswd-setup || scripts_writing_error
 
-# Tail of recent logs — copy/paste this to Stryker if VNC misbehaves
+# Tail of recent logs — copy/paste this to ARCXSTRIKE if VNC misbehaves
 echo "#!/bin/bash
 echo '===== xvfb.log ====='; tail -40 /tmp/xvfb.log 2>/dev/null
 echo '===== xfce.log ====='; tail -80 /tmp/xfce.log 2>/dev/null
@@ -188,5 +191,5 @@ chmod +x /usr/local/bin/vnc-diag || scripts_writing_error
 echo "×Verifying the installation"
 command -v x11vnc >/dev/null 2>&1 && command -v Xvfb >/dev/null 2>&1 \
     && echo "×Done" || error
-echo "[!] Use the helper scripts vncserver-start and vncserver-stop to start and stop Stryker XFCE."
+echo "[!] Use the helper scripts vncserver-start and vncserver-stop to start and stop ARCXSTRIKE XFCE."
 echo "[!] Run vnc-diag if you get a dark screen — it dumps all VNC logs."

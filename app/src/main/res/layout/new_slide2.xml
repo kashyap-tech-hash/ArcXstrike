@@ -32,7 +32,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="18dp"
-            android:text="Stryker needs root and storage access to run its tooling chroot and store scan output."
+            android:text="ARCXSTRIKE needs storage and environment permissions to run its rootless Arch Linux engine and tools."
             android:textColor="@color/grey"
             android:textSize="13sp" />
 

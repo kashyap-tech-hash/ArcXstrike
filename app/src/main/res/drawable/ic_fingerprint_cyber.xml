@@ -1,0 +1,80 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+
+    <!-- Outer Arch Ridge 1 -->
+    <path
+        android:strokeColor="#00FF66"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 12,24 C 12,14 18,8 24,8 C 30,8 36,14 36,24" />
+
+    <!-- Outer Arch Ridge 2 -->
+    <path
+        android:strokeColor="#00E676"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 15,28 C 15,18 19,12 24,12 C 29,12 33,18 33,28" />
+
+    <!-- Middle Whorl 1 -->
+    <path
+        android:strokeColor="#00FF66"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 18,32 C 18,22 21,16 24,16 C 27,16 30,22 30,32" />
+
+    <!-- Middle Whorl 2 -->
+    <path
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 21,35 C 21,26 22.5,20 24,20 C 25.5,20 27,26 27,35" />
+
+    <!-- Core Loop -->
+    <path
+        android:strokeColor="#00FF66"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 24,37 C 24,30 24,24 24,24" />
+
+    <!-- Left Flank Ridges -->
+    <path
+        android:strokeColor="#00E676"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M 9,27 C 9,33 11,38 14,41" />
+
+    <path
+        android:strokeColor="#00FF66"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M 7,22 C 7,14 11,8 17,5" />
+
+    <!-- Right Flank Ridges -->
+    <path
+        android:strokeColor="#00E676"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M 39,27 C 39,33 37,38 34,41" />
+
+    <path
+        android:strokeColor="#00FF66"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M 41,22 C 41,14 37,8 31,5" />
+
+    <!-- Lower Delta Traces -->
+    <path
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:pathData="M 18,38 C 20,41 23,43 24,43 C 25,43 28,41 30,38" />
+
+</vector>

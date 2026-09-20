@@ -106,8 +106,14 @@ public final class RemoteManifest {
             // This build takes its rootfs only from core.debian, and never falls back to the
             // legacy keys — installing an Alpine tarball into a Debian layout would be worse
             // than failing.
+            JSONObject arch = core.optJSONObject("arch");
             JSONObject debian = core.optJSONObject("debian");
-            if (debian != null
+            if (arch != null
+                    && com.zalexdev.stryker.BuildConfig.VERSION_CODE
+                       >= arch.optInt("min_version_code", 0)) {
+                manifest.coreVersion = arch.optString("version", core.optString("version", ""));
+                manifest.chroot64 = asset(arch.optJSONObject("chroot64"));
+            } else if (debian != null
                     && com.zalexdev.stryker.BuildConfig.VERSION_CODE
                        >= debian.optInt("min_version_code", 0)) {
                 manifest.coreVersion = debian.optString("version", core.optString("version", ""));

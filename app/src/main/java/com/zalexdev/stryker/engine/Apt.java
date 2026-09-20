@@ -23,47 +23,52 @@ public final class Apt {
         c.add("export APT_LISTCHANGES_FRONTEND=none");
         c.add("export LANG=C.UTF-8 LC_ALL=C.UTF-8");
         c.add("export HOME=/root");
-        c.add("mkdir -p /var/lib/apt/lists/partial /var/cache/apt/archives/partial /tmp");
+        c.add("export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH");
+        c.add("mkdir -p /var/lib/apt/lists/partial /var/cache/apt/archives/partial /var/cache/pacman/pkg /var/lib/pacman /tmp");
         return c;
     }
 
     public static String update() {
-        return "apt-get " + OPTS + " update";
+        return "if command -v pacman >/dev/null 2>&1; then pacman -Sy --noconfirm; else apt-get " + OPTS + " update; fi";
     }
 
     public static String upgrade() {
-        return "apt-get " + OPTS + " -y upgrade";
+        return "if command -v pacman >/dev/null 2>&1; then pacman -Syu --noconfirm; else apt-get " + OPTS + " -y upgrade; fi";
     }
 
     public static String install(String packages) {
-        return "apt-get " + OPTS + " install -y --no-install-recommends " + packages;
+        return "if command -v pacman >/dev/null 2>&1; then pacman -S --noconfirm --needed " + packages
+                + "; else apt-get " + OPTS + " install -y --no-install-recommends " + packages + "; fi";
     }
 
     public static String installRecommended(String packages) {
-        return "apt-get " + OPTS + " install -y " + packages;
+        return "if command -v pacman >/dev/null 2>&1; then pacman -S --noconfirm --needed " + packages
+                + "; else apt-get " + OPTS + " install -y " + packages + "; fi";
     }
 
     public static String remove(String packages) {
-        return "apt-get " + OPTS + " purge -y " + packages
-                + "; apt-get " + OPTS + " autoremove -y";
+        return "if command -v pacman >/dev/null 2>&1; then pacman -Rns --noconfirm " + packages
+                + "; else apt-get " + OPTS + " purge -y " + packages + "; apt-get " + OPTS + " autoremove -y; fi";
     }
 
     public static String clean() {
-        return "apt-get " + OPTS + " clean";
+        return "if command -v pacman >/dev/null 2>&1; then pacman -Scc --noconfirm; else apt-get " + OPTS + " clean; fi";
     }
 
     public static String listInstalled() {
-        return "dpkg-query -W -f='${Package}\\t${Version}\\n' 2>/dev/null";
+        return "if command -v pacman >/dev/null 2>&1; then pacman -Q 2>/dev/null; else dpkg-query -W -f='${Package}\\t${Version}\\n' 2>/dev/null; fi";
     }
 
     public static String search(String query) {
-        return "apt-cache search --names-only " + shellQuote(query)
-                + " 2>/dev/null | head -n 400";
+        return "if command -v pacman >/dev/null 2>&1; then pacman -Ss " + shellQuote(query)
+                + " 2>/dev/null | head -n 400; else apt-cache search --names-only " + shellQuote(query)
+                + " 2>/dev/null | head -n 400; fi";
     }
 
     public static String isInstalled(String pkg) {
-        return "dpkg-query -W -f='${Status}' " + shellQuote(pkg) + " 2>/dev/null "
-                + "| grep -q 'ok installed' && echo " + INSTALLED_MARK + " || echo " + MISSING_MARK;
+        return "( (command -v pacman >/dev/null 2>&1 && pacman -Q " + shellQuote(pkg) + " >/dev/null 2>&1) "
+                + "|| (dpkg-query -W -f='${Status}' " + shellQuote(pkg) + " 2>/dev/null | grep -q 'ok installed') ) "
+                + "&& echo " + INSTALLED_MARK + " || echo " + MISSING_MARK;
     }
 
     public static String hasBinary(String bin) {

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/landing_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#050806">
+
+    <!-- 1. Background Hacker Hero Artwork -->
+    <ImageView
+        android:id="@+id/hacker_hero_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/hacker_landing_hero" />
+
+    <!-- 2. Dark Cyber Gradients Scrim (Top & Bottom fades for crisp text contrast) -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/scrim_top_dark" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/scrim_bottom_dark" />
+
+    <!-- 3. Ambient Matrix Digital Rain Overlay -->
+    <com.zalexdev.stryker.custom.MatrixRainView
+        android:id="@+id/matrix_rain_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.32" />
+
+    <!-- 4. Top Cyber HUD Header -->
+    <LinearLayout
+        android:id="@+id/landing_top_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/landing_status_dot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:background="@drawable/sev_dot_bg"
+            android:backgroundTint="#00FF66" />
+
+        <TextView
+            android:id="@+id/landing_system_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_weight="1"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.08"
+            android:text="ARCXSTRIKE // AARCH64_NET"
+            android:textColor="#00FF66"
+            android:textSize="11sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/landing_hex_ticker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:text="0x7F454C46"
+            android:textColor="#00E5FF"
+            android:textSize="11sp" />
+
+        <TextView
+            android:id="@+id/landing_clearance_badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/cyber_badge_bg"
+            android:fontFamily="monospace"
+            android:paddingStart="6dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:text="LVL-9"
+            android:textColor="#00FF66"
+            android:textSize="9sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- 5. Center Branding & Telemetry Chips -->
+    <LinearLayout
+        android:id="@+id/landing_branding_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/landing_top_header"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp">
+
+        <TextView
+            android:id="@+id/landing_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.14"
+            android:shadowColor="#CC00FF66"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            android:shadowRadius="16"
+            android:text="ARCXSTRIKE"
+            android:textColor="#00FF66"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/landing_subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.08"
+            android:text="// ADVANCED CYBERNETIC WARFARE //"
+            android:textColor="#A5D6A7"
+            android:textSize="11sp" />
+
+        <!-- 4 High-Tech Telemetry Chips -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/cyber_hud_chip"
+                android:fontFamily="monospace"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="ROOTLESS VM"
+                android:textColor="#00E5FF"
+                android:textSize="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:background="@drawable/cyber_hud_chip"
+                android:fontFamily="monospace"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="62,419 CVEs"
+                android:textColor="#00FF66"
+                android:textSize="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cyber_hud_chip"
+                android:fontFamily="monospace"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="MONITOR RAW"
+                android:textColor="#FFD600"
+                android:textSize="10sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- 6. Bottom Fingerprint Scanner & Start Button -->
+    <LinearLayout
+        android:id="@+id/landing_bottom_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="28dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp">
+
+        <!-- High-Tech Biometric Scanner View -->
+        <com.zalexdev.stryker.custom.FingerprintScannerView
+            android:id="@+id/fingerprint_scanner"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal" />
+
+        <!-- Biometric Status Label -->
+        <TextView
+            android:id="@+id/biometric_status_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.08"
+            android:text="BIOMETRIC AUTHENTICATION REQUIRED"
+            android:textColor="#00FF66"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/biometric_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="monospace"
+            android:letterSpacing="0.05"
+            android:text="[ TAP OR HOLD FINGERPRINT TO INITIATE ]"
+            android:textColor="#839988"
+            android:textSize="11sp" />
+
+        <!-- High-tech Start Button Alternative (Explicit Start Button with Fingerprint) -->
+        <LinearLayout
+            android:id="@+id/start_button_bar"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/cyber_button_glow"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_fingerprint_cyber"
+                app:tint="#00FF66" />
+
+            <TextView
+                android:id="@+id/start_button_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.12"
+                android:text="START // INITIALIZE SYSTEM"
+                android:textColor="#00FF66"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

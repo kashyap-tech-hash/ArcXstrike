@@ -19,8 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
-            android:text="Welcome to StrykerOSS"
-            android:textColor="?android:attr/textColorPrimary"
+            android:text="Welcome to ARCXSTRIKE"
+            android:textColor="@color/brand_green"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -30,7 +30,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="14dp"
-            android:text="A new-generation mobile pentest suite — scan, audit and crack networks with a tap."
+            android:text="A next-generation rootless Arch Linux mobile security suite for educational and authorized research."
             android:textColor="@color/grey"
             android:textSize="13sp" />
 
@@ -389,7 +389,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="4dp"
             android:gravity="center"
-            android:text="Open-source · research and authorized testing only"
+            android:text="ARCXSTRIKE · Educational &amp; Authorized Research Only"
             android:textColor="@color/grey"
             android:textSize="11sp" />
     </LinearLayout>

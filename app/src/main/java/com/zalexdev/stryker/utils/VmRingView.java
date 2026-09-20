@@ -100,7 +100,10 @@ public final class VmRingView extends View {
         trackPaint.setStrokeCap(Paint.Cap.ROUND);
         trackPaint.setStrokeJoin(Paint.Join.ROUND);
 
-        glyph = AppCompatResources.getDrawable(getContext(), R.drawable.debian);
+        glyph = AppCompatResources.getDrawable(getContext(), R.drawable.arch);
+        if (glyph == null) {
+            glyph = AppCompatResources.getDrawable(getContext(), R.drawable.debian);
+        }
         if (glyph != null) {
             glyph = glyph.mutate();
             glyph.setTint(color(R.color.grey, 0xFF757575));
